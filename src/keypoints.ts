@@ -1,7 +1,13 @@
 /*
+Strict mode in Javascript
+https://www.linkedin.com/feed/update/urn:li:activity:6937064685842112512?utm_source=linkedin_share&utm_medium=member_desktop_web
+*/
+
+/*
 React query Course
 https://react-query.tanstack.com/overview
 
+1st Video - 
 What is React query and why we use it?
 React query helps to fetch the data from the server. It makes fetching,
 caching, synchronizing and updating server state in the application.
@@ -17,7 +23,7 @@ Client and server state:
 
 Client state store in the browser. We can store it using useState or useReducer
 or third party library like redux or mobx or many more.
-It is not stored permantly and goes away after browser close / refresh.
+It is not stored permantly and goes away after browser close.
 It is synchronous and instantly available.
 It is maintain by client and only single client can modify it.
 
@@ -47,6 +53,8 @@ Client data is synchronous and server data is asynchronous.
 Client data can be changed by single user and server data can be changed
 by many users.
 
+
+2nd Video -
 Query keys and query functions:
 
 Query keys to identify the query. React query uses key to maintain the
@@ -57,6 +65,16 @@ It accept query keys in the array same like useEffect dependency array.
 If any value change from the array, it refetch the data from the backend.
 As per below example, it refetch the data if username value change in the key
 array.
+useQuery(['userdetails', username], fetchUserDetails);
+
+
+const cacheQuery = {};
+if (cacheQuery['key']) {
+  cacheQuery['key'] = data;
+  return data;
+}
+return cacheQuery['key'];
+
 
 useQuery(["metadata"], fetchMetadata);
 
@@ -112,8 +130,54 @@ It is useful when we need to pass multiple parameters in the function.
 Whatever we will pass in the query array it will pass in the function api
 call.
 
-How you can use react-query in your app and use it at multiple places. 
 
+3rd Video:
+Parallel and dependent queries:
+Parallel query means make multiple call at a same time.
+Sometime we need to make multiple call at the same time like fetch metadata
+or comments, user information at the same time.
+We can do it easily.
+There are different way to do it:
+- Make api call with multiple useQuery same like we make single useQuery call
+
+const result1 = useQuery<IUserDetails>(
+    ["key1"], fetchUserDetailsWithQueryKey
+  );
+const result2 = useQuery<IUserDetails>(
+    ["key2"], fetchUserDetailsWithQueryKey
+  );
+
+- Combine multiple API call into a single query with Promise.all helper.
+
+function getData() {
+  return Promise.all([
+    fetch(`url1`)
+      .then((res) => res.json()),
+    fetch(`url2`)
+      .then((res) => res.json())
+  ]);
+}
+
+const result = useQuery(
+    ["key1"], () => getData());
+
+const [data1, data2] = result.data;
+
+- useQueries hook to make API call. It accept an array of query options
+ and returns an array of query results.
+
+https://react-query.tanstack.com/reference/useQueries
+
+
+Dependent Queries:
+Dependent query means one query is dependent on another query result.
+Example: blog comment is dependent on blog details.
+We will first fetch blog details and then fetch blog comments. one query
+is dependent on another query.
+We can control this with the help of "enabled" configuration.
+React query accept multiple configuration and it will help us to control
+the query.
+https://react-query.tanstack.com/reference/useQuery
 
 Reference:
 https://react-query.tanstack.com/overview
