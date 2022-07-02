@@ -32,6 +32,7 @@ export function WithReactQueryKeyExample() {
     fetchGithubUserDetailsWithQueryKey,
     {
       enabled: username ? true : false,
+      staleTime: Infinity,
     }
   );
 

@@ -23,6 +23,7 @@ export function WithReactQueryExample() {
     () => fetchGithubUserDetails(username),
     {
       enabled: username ? true : false,
+      staleTime: 1000 * 60,
     }
   );
 

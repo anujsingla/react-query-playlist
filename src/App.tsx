@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { WithReactQueryExample } from "./components/WithReactQueryExample";
 import { WithReactQueryKeyExample } from "./components/WithReactQueryKeyExample";
 import { ParallelQueries } from "./components/ParallelQueries";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
         <WithReactQueryKeyExample />
         <ParallelQueries />
       </div>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

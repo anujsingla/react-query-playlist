@@ -179,6 +179,103 @@ React query accept multiple configuration and it will help us to control
 the query.
 https://react-query.tanstack.com/reference/useQuery
 
+
+4th Video:
+
+React query Dev Tool
+
+React query dev tool display the current state of the react query cache. 
+It helps to keep track of queries cache states. We can check what queries
+has been made, which one are stale, which query refetch and cache states.
+It is a React component and we can include anywhere in the app.
+import { ReactQueryDevtools } from "react-query/devtools";
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <Components />
+      </div>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+  );
+After adding this component, we will see small floating icon in the corner
+of the app which open dev tool. It will show only in the development env
+and hide in the production env.
+
+5th Video:
+
+How React Query manage the query cache. When react query
+refetch the data from the server? How React query know when to fetch 
+the data from the server?
+
+React query helps to fetch the data when component mount, store in the cache
+and refetch the data and provide data to the component.
+It helps to sync the data between local state (React query cache) and server 
+state.
+
+How React query know when to fetch the data from the server?
+React query uses 3 cache state - fresh, stale, inactive.
+
+fresh state - Once the data fetched from the server, the query itself marked as
+success or error, cache state set is fresh, means the data in the cache is
+up to date and no need to fetch again.
+
+stale state - It means data on the client might be out of date with the server
+and need to fetch the data.
+By default, every query marked as stale after fetch the data and we can check
+this state by boolean value "isStale".
+
+inactive state - React query marked query as inactive after component unmount and
+it remove the data from the cache if the query is not used for a while.
+
+React query will refetch the data from the server if query is stale and won't
+refetch the data if it is fresh.
+It change the query state between fresh and stale based on timer. We can set
+fresh time by "staleTime" configuration option.
+
+const result = useQuery<IUserDetails>(
+    ["githubuserdetails", username],
+    () => fetchUserDetails(username),
+    {
+      enabled: username ? true : false,
+      staleTime: 1000 * 60
+    }
+
+It makes query fresh for 60 second (1 minute) after it was last fetched.
+After 60 sec, react query make it stale.
+
+You can make query fresh forever by setting staleTime to Infinity.
+
+const result = useQuery<IUserDetails>(
+    ["githubuserdetails", username],
+    () => fetchUserDetails(username),
+    {
+      enabled: username ? true : false,
+      staleTime: Infinity
+    }
+
+This query fetched data from the server only 1 time and cached for the duration
+of the app. It will not refetched again because we make staleTime to Infinity.
+
+When react query refetch the data from the server?
+- Component mount
+It fetch or refetch the data when component mount.
+
+- window focus
+It refetch the data after window focus or user change tab from one to another.
+We can control this by "refetchOnWindowFocus" configuration option
+
+- Network reconnect
+It refetch the data if there are any network issue.
+We can control this by "refetchOnReconnect" configuration option
+
+- Optional Interval
+We can refetch the data after some interval (after 1 min or any time).
+It is very useful if you would like to refetch the data after some time.
+We can control this by "refetchInterval" configuration option.
+
+
+
 Reference:
 https://react-query.tanstack.com/overview
 https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api

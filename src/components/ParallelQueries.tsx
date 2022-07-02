@@ -20,6 +20,13 @@ const fetchGithubUserDetailsWithQueryKey = async ({
   return response.data;
 };
 
+const fetchMockTodos = async (): Promise<any> => {
+  const response = await axios.get(
+    `https://jsonplaceholder.typicode.com/todos`
+  );
+  return response.data;
+};
+
 export function ParallelQueries() {
   const [username, setUsername] = useState("");
 
@@ -43,7 +50,13 @@ export function ParallelQueries() {
     }
   );
 
+  const mockResult = useQuery(["mocktododata"], () => fetchMockTodos(), {
+    // refetchInterval: 7000,
+    refetchOnWindowFocus: false,
+  });
+
   console.log("result", result);
+  console.log("mockResult", mockResult);
 
   return (
     <div>
